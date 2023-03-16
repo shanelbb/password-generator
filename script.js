@@ -33,6 +33,11 @@ const chooseCriteria = () => {
       criteria += questions[i].answer;
     }
   }
+
+  if (!criteria) {
+    alert("please choose at least one criteria");
+    chooseCriteria();
+  } 
 }
 
 const generatePassword = () => {
@@ -43,19 +48,16 @@ const generatePassword = () => {
   } else {
     chooseCriteria()
   }
-  if (!criteria) {
-    alert("please choose at least one criteria")
-    chooseCriteria()
-  } else {
-    let randomize;
-    let char;
-    for (let i = 0; i < pwLength; i++) {
-      randomize = Math.floor(Math.random() * criteria.length)
-      char = criteria.charAt(randomize)
-      returnedPassword += char
-    }
+
+let randomize;
+let char;
+  for (let i = 0; i < pwLength; i++) {
+    randomize = Math.floor(Math.random() * criteria.length)
+    char = criteria.charAt(randomize)
+    returnedPassword += char
   }
-  return returnedPassword 
+return returnedPassword 
+  
 }
 
 // Write password to the #password input
