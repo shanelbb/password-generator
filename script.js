@@ -19,13 +19,13 @@ const questions = [
   {
     question:
       "Include special characters [!@#$%^&*()_-+=] (Ok = Yes, Cancel = No)",
-    answer: "!@#$%^&*()_-+=",
+    answer: "!@#$%^&*+=",
   },
 ];
 
-var generateBtn = document.querySelector("#generate");
+const generateBtn = document.querySelector("#generate");
 let criteria = '';
-let returnedPassword = '';
+
 const chooseCriteria = () => {
   for (let i = 1; i < questions.length; i++) {
     let userChoice = confirm(questions[i].question)
@@ -33,7 +33,6 @@ const chooseCriteria = () => {
       criteria += questions[i].answer;
     }
   }
-
   if (!criteria) {
     alert("please choose at least one criteria");
     chooseCriteria();
@@ -41,32 +40,46 @@ const chooseCriteria = () => {
 }
 
 const generatePassword = () => {
+  let returnedPassword = "";
   let pwLength = prompt(questions[0].question)
-  if (pwLength < 8 || pwLength > 128) {
-    alert('Please choose a number from 8 - 128')
-    generatePassword();
+  if (!pwLength) {
+    return ''
+  } else if (+pwLength < 8 || +pwLength > 128) {
+    alert("Please choose a number from 8 - 128");
+    return generatePassword();
   } else {
     chooseCriteria()
+    let randomize;
+    let char;
+    for (let i = 0; i < +pwLength; i++) {
+      randomize = Math.floor(Math.random() * criteria.length);
+      char = criteria.charAt(randomize);
+      returnedPassword += char;
+    }
   }
-
-let randomize;
-let char;
-  for (let i = 0; i < pwLength; i++) {
-    randomize = Math.floor(Math.random() * criteria.length)
-    char = criteria.charAt(randomize)
-    returnedPassword += char
-  }
-return returnedPassword 
-  
+  return returnedPassword 
 }
+
+const copyPassword = (val) => {
+  val.select();
+  val.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(val.value).then(() => {
+  });
+};
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+  const passwordText = document.querySelector("#password");
+  const copyMessage = document.querySelector(".card-header p");
+  const password = generatePassword();
   passwordText.value = password;
-  criteria = "";
-  returnedPassword = "";
+  copyMessage.textContent = "Click password to copy to clipboard"
+
+  passwordText.addEventListener('click', () => {
+    copyPassword(passwordText);
+    copyMessage.textContent = 'Password copied to clipboard!'
+  })
+  criteria = ''
 }
 
 // Add event listener to generate button
