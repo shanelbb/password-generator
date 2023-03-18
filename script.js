@@ -48,36 +48,36 @@ const chooseCriteria = () => {
 
 // Function to collect user answers to prompts and return the generated password
 const generatePassword = () => {
-  // variable to store the generated password and clears the returned password when user generates another password
+  // variable to store the generated password 
   let returnedPassword = "";
-  // Variable with prompt for user to choose a password length between 8 and 28
+  // Variable to hold user input
   let pwLength = prompt(questions[0].question)
   // Conditional statement to handle user input
   // Function stops if user hits cancel on prompt
   if (!pwLength) {
     return ''
   }
-  // Error handling if user chooses number outside of 8 and 128
+  // Error handling if user chooses character outside of 8 and 128
   else if (+pwLength < 8 || +pwLength > 128 || isNaN(+pwLength)){
     alert("Please choose a number from 8 - 128");
+    // restarts function
     return generatePassword();
   } else {
-    console.log(+pwLength);
     chooseCriteria();
-    let randomize;
-    let char;
+    // loops through criteria string and adds characters to returnedPassword variable
     for (let i = 0; i < +pwLength; i++) {
-      randomize = Math.floor(Math.random() * criteria.length);
-      char = criteria.charAt(randomize);
+      let randomize = Math.floor(Math.random() * criteria.length);
+      let char = criteria.charAt(randomize);
       returnedPassword += char;
     }
   }
   return returnedPassword 
 }
 
+// copy password to clipboard
 const copyPassword = (val) => {
   val.select();
-  val.setSelectionRange(0, 99999);
+  val.setSelectionRange(0, 99999); // For mobile devices
   navigator.clipboard.writeText(val.value).then(() => {
   });
 };
