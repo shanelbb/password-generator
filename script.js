@@ -20,16 +20,17 @@ const questions = [
   {
     question:
       "Include special characters [!@#$%^&*()_-+=] (Ok = Yes, Cancel = No)",
-    answer: "!@#$%^&*+=",
+    answer: `!"#$%&'()*+,-./:;<=>?@[]^_\`{|}~`,
   },
 ];
 
 // query the button for the event listener to start generating the password
 const generateBtn = document.querySelector("#generate");
+
 // Variable to store the password criteria
 let criteria = '';
 
-// Function to loop through the questions object questions and add the characters the user wants to use to the criteria variable
+// Loops through questions object and adds characters user selects to the criteria variable. Loop starts from index 1.
 const chooseCriteria = () => {
   for (let i = 1; i < questions.length; i++) {
     let userChoice = confirm(questions[i].question)
@@ -52,6 +53,7 @@ const generatePassword = () => {
   let returnedPassword = "";
   // Variable to hold user input
   let pwLength = prompt(questions[0].question)
+
   // Conditional statement to handle user input
   // Function stops if user hits cancel on prompt
   if (!pwLength) {
@@ -64,7 +66,7 @@ const generatePassword = () => {
     return generatePassword();
   } else {
     chooseCriteria();
-    // loops through criteria string and adds characters to returnedPassword variable
+    // loops through criteria string and adds characters to returnedPassword variable. Adds number of characters based on pwLength that user chose.
     for (let i = 0; i < +pwLength; i++) {
       let randomize = Math.floor(Math.random() * criteria.length);
       let char = criteria.charAt(randomize);
@@ -85,17 +87,22 @@ const copyPassword = (val) => {
 // Write password to the #password input
 function writePassword() {
   const passwordText = document.querySelector("#password");
-  const copyMessage = document.querySelector(".card-header p");
   const password = generatePassword();
   passwordText.value = password;
+  
+  // Adds click to copy message to header
+  const copyMessage = document.querySelector(".card-header p");
   copyMessage.textContent = "Click password to copy to clipboard"
 
+  // Click event to copy password and change header message
   passwordText.addEventListener('click', () => {
     copyPassword(passwordText);
     copyMessage.textContent = 'Password copied to clipboard!'
   })
+
+  // resets criteria string
   criteria = ''
 }
 
-// Add event listener to generate button
+// Click event to trigger password generation
 generateBtn.addEventListener("click", writePassword)
