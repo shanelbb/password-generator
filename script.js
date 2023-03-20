@@ -28,12 +28,12 @@ const questions = [
 const generateBtn = document.querySelector("#generate");
 
 // Variable to store the password criteria
-let criteria = '';
+let criteria = "";
 
 // Loops through questions object and adds characters user selects to the criteria variable. Loop starts from index 1.
 const chooseCriteria = () => {
   for (let i = 1; i < questions.length; i++) {
-    let userChoice = confirm(questions[i].question)
+    let userChoice = confirm(questions[i].question);
     if (userChoice) {
       criteria += questions[i].answer;
     }
@@ -44,23 +44,23 @@ const chooseCriteria = () => {
     alert("please choose at least one criteria");
     // start function over
     chooseCriteria();
-  } 
-}
+  }
+};
 
 // Function to collect user answers to prompts and return the generated password
 const generatePassword = () => {
-  // variable to store the generated password 
+  // variable to store the generated password
   let returnedPassword = "";
   // Variable to hold user input
-  let pwLength = prompt(questions[0].question)
+  let pwLength = prompt(questions[0].question);
 
   // Conditional statement to handle user input
   // Function stops if user hits cancel on prompt
   if (!pwLength) {
-    return ''
+    return "";
   }
   // Error handling if user chooses character outside of 8 and 128
-  else if (+pwLength < 8 || +pwLength > 128 || isNaN(+pwLength)){
+  else if (+pwLength < 8 || +pwLength > 128 || isNaN(+pwLength)) {
     alert("Please choose a number from 8 - 128");
     // restarts function
     return generatePassword();
@@ -73,15 +73,14 @@ const generatePassword = () => {
       returnedPassword += char;
     }
   }
-  return returnedPassword 
-}
+  return returnedPassword;
+};
 
 // copy password to clipboard
 const copyPassword = (val) => {
   val.select();
   val.setSelectionRange(0, 99999); // For mobile devices
-  navigator.clipboard.writeText(val.value).then(() => {
-  });
+  navigator.clipboard.writeText(val.value).then(() => {});
 };
 
 // Write password to the #password input
@@ -89,20 +88,20 @@ function writePassword() {
   const passwordText = document.querySelector("#password");
   const password = generatePassword();
   passwordText.value = password;
-  
+
   // Adds click to copy message to header
   const copyMessage = document.querySelector(".card-header p");
-  copyMessage.textContent = "Click password to copy to clipboard"
+  copyMessage.textContent = "Click password to copy to clipboard";
 
   // Click event to copy password and change header message
-  passwordText.addEventListener('click', () => {
+  passwordText.addEventListener("click", () => {
     copyPassword(passwordText);
-    copyMessage.textContent = 'Password copied to clipboard!'
-  })
+    copyMessage.textContent = "Password copied to clipboard!";
+  });
 
   // resets criteria string
-  criteria = ''
+  criteria = "";
 }
 
 // Click event to trigger password generation
-generateBtn.addEventListener("click", writePassword)
+generateBtn.addEventListener("click", writePassword);
